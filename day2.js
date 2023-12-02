@@ -8,13 +8,21 @@ Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green`;
 function parseGames(input) {
   let games = [];
   for (let line of input.split('\n')) {
+    // 'Game (id): ...'
     let gameIdPos = line.indexOf(': ');
     let id = line.substring(0, gameIdPos).match(/(\d+)/g)[0];
     line = line.substring(gameIdPos + 2); // 2 for length of ': '
 
     let choices = [];
-    for (let round of line.split('; ')) {
-      let choiceMatches = round.matchAll(/(\d+) (\w+)/g)
+    for (let choice of line.split('; ')) {
+      // '(num) (color),' '(num) (color)'
+      let choiceMatches = choice.matchAll(/(\d+) (\w+)/g)
+
+      // Each 'choice' the Elf reaches into a back and produces some number of
+      // cubes. We break the cubes down into the number of red, blue and green
+      // produced. That is a single 'choice' - the cubes are then put back into
+      // the bag.
+
       let cubes = []
       for (let [_, count, color] of choiceMatches) {
         cubes.push({ count: parseInt(count), color })
@@ -49,3 +57,22 @@ part1(parseGames(example)) // 8
 let fs = require('node:fs');
 
 part1(parseGames(fs.readFileSync('inputs/day2', 'utf8')));
+
+
+function part2(games) {
+  return games.map(game => {
+    let red = green = blue = 0;
+    for (let choice of game.choices) {
+      for (let cube of choice.cubes) {
+        if (cube.color === 'red' && cube.count > red) red = cube.count;
+        if (cube.color === 'green' && cube.count > green) green = cube.count;
+        if (cube.color === 'blue' && cube.count > blue) blue = cube.count;
+      }
+    }
+    return red * green * blue;
+  }).reduce((sum, power) => sum + power);
+}
+
+part2(parseGames(example)) // 2286
+
+part2(parseGames(fs.readFileSync('inputs/day2', 'utf8')))
