@@ -26,7 +26,7 @@ part1(example) // 142
 
 let fs = require('node:fs');
 
-part1(fs.readFileSync('inputs/day1', 'utf8'))
+part1(fs.readFileSync('../inputs/day1', 'utf8'))
 
 
 let example2 = `two1nine
@@ -74,4 +74,4 @@ function part2(input: string) {
 
 part2(example2) // 281
 
-part2(fs.readFileSync('inputs/day1', 'utf8'))
+part2(fs.readFileSync('../inputs/day1', 'utf8'))

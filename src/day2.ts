@@ -66,7 +66,7 @@ part1(parseGames(example)) // 8
 
 let fs = require('node:fs');
 
-part1(parseGames(fs.readFileSync('inputs/day2', 'utf8')));
+part1(parseGames(fs.readFileSync('../inputs/day2', 'utf8')));
 
 
 function part2(games: Game[]) {
@@ -85,4 +85,4 @@ function part2(games: Game[]) {
 
 part2(parseGames(example)) // 2286
 
-part2(parseGames(fs.readFileSync('inputs/day2', 'utf8')))
+part2(parseGames(fs.readFileSync('../inputs/day2', 'utf8')))
