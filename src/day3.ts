@@ -19,7 +19,7 @@ type SchematicValue = {
 }
 
 type Schematic = {
-  numbers: SchematicValue[],
+  parts: SchematicValue[],
   symbols: SchematicValue[]
 }
 
@@ -44,11 +44,12 @@ function matchSchematicValues(lines: string[], regex: RegExp): SchematicValue[] 
   return values;
 }
 
+
 function parseSchematic(input: string): Schematic {
   let lines = input.split('\n');
-  let numbers = matchSchematicValues(lines, /(\d)+/g)
+  let parts = matchSchematicValues(lines, /(\d)+/g)
   let symbols = matchSchematicValues(lines, /([^\d^\.])+/g);
-  return { numbers, symbols };
+  return { parts, symbols };
 }
 
 parseSchematic(example)
@@ -64,28 +65,30 @@ function isAdjacent(a: SchematicValue, b: SchematicValue): boolean {
 isAdjacent(
   { value: "123", y: 0, start: 0, end: 2},
   { value: "*", y: 1, start: 3, end: 3}
-)
+) // true
 
 isAdjacent(
   { value: "123", y: 0, start: 0, end: 2},
   { value: "*", y: 2, start: 3, end: 3}
-)
+) // false
 
 isAdjacent(
   { value: "123", y: 0, start: 0, end: 2},
   { value: "*", y: 1, start: 4, end: 4}
-)
+) // false
 
 isAdjacent(
   { value: "123", y: 0, start: 0, end: 2},
   { value: "*", y: -1, start: 3, end: 3}
-)
+) // true
 
 
-function part1(schematic: Schematic): number {
-  return schematic.numbers
-    .filter(number => schematic.symbols.some(symbol => isAdjacent(number, symbol)))
-    .reduce((sum, number) => sum + parseInt(number.value), 0)
+function part1({ parts, symbols }: Schematic): number {
+  return parts
+    .filter(part => symbols.some(symbol => isAdjacent(part, symbol)))
+    .reduce((sum, part) => sum + parseInt(part.value), 0);
+
+
 }
 
 part1(parseSchematic(example)) // 4361
