@@ -87,12 +87,30 @@ function part1({ parts, symbols }: Schematic): number {
   return parts
     .filter(part => symbols.some(symbol => isAdjacent(part, symbol)))
     .reduce((sum, part) => sum + parseInt(part.value), 0);
-
-
 }
 
-part1(parseSchematic(example)) // 4361
+part1(parseSchematic(example)); // 4361
 
-let fs = require('node:fs')
+let fs = require('node:fs');
 
-part1(parseSchematic(fs.readFileSync('../inputs/day3', 'utf8')))
+part1(parseSchematic(fs.readFileSync('../inputs/day3', 'utf8')));
+
+
+function part2({ parts, symbols }: Schematic): number {
+  let gears = 0;
+  for (let symbol of symbols) {
+    if (symbol.value === '*') {
+      let adjacent = parts.filter(part => isAdjacent(part, symbol));
+      if (adjacent.length === 2) {
+        let [a, b] = adjacent;
+        gears += parseInt(a.value) * parseInt(b.value);
+      }
+    }
+  }
+  return gears
+}
+
+part2(parseSchematic(example)); // 467835
+
+
+part2(parseSchematic(fs.readFileSync('../inputs/day3', 'utf8')));
