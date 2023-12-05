@@ -148,8 +148,12 @@ function part2(input: string) {
 
   let mappings = parseMappings(lines);
   let result = Infinity;
+  let iterations = 1000000000;
   for (let [start, length] of seedRanges) {
     for (let seed of range(start, start + length)) {
+      if (iterations-- === 0) {
+        throw new Error("Runaway loop. Current result: " + result)
+      }
       let seedResult = applyMappings(seed, mappings);
       if (seedResult < result) result = seedResult;
     }
